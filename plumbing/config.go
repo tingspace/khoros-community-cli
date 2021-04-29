@@ -8,18 +8,36 @@ import (
 )
 
 type Common struct {
-	Env  string
-	Keys map[string]string
+	Env      string
+	Keys     map[string]string
+	Commands map[string]string
 }
+
+const (
+	IdxCommand    = 2
+	IdxCollection = 3
+	IdxModifier   = 4
+	IdxParams     = 5
+)
 
 func Config() *Common {
 	cmn := Common{}
-	if len(os.Args) > 1 {
+	if len(os.Args) > 1 && len(os.Args) < 6 {
 		cmn.Env = os.Args[1]
+		cmn.Commands = setCommandConfig(os.Args)
 	}
 	cmn.Keys = keysFromEnv()
 
 	return &cmn
+}
+
+func setCommandConfig(a []string) map[string]string {
+	m := make(map[string]string)
+	m["Command"] = a[IdxCommand]
+	m["Collection"] = a[IdxCollection]
+	m["Modifier"] = a[IdxModifier]
+	m["Params"] = a[IdxParams]
+	return m
 }
 
 func keysFromEnv() map[string]string {
