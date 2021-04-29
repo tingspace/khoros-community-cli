@@ -1,5 +1,0 @@
-package khoros
-
-func ListMessages() {
-
-}

@@ -22,11 +22,15 @@ const (
 
 func Config() *Common {
 	cmn := Common{}
+
+	// Only supporting CLI Args via Debug for now
 	if len(os.Args) > 1 && len(os.Args) < 6 {
 		cmn.Env = os.Args[1]
 		cmn.Commands = setCommandConfig(os.Args)
 	}
+	cmn.Env = "Main"
 	cmn.Keys = keysFromEnv()
+	cmn.Commands = commonCommands()
 
 	return &cmn
 }
@@ -56,6 +60,16 @@ func keysFromEnv() map[string]string {
 		val := kv[1]
 		m[key] = val
 	}
+
+	return m
+}
+
+func commonCommands() map[string]string {
+	m := make(map[string]string)
+	m["Command"] = "list"
+	m["Collection"] = "messages"
+	m["Modifier"] = "5"
+	m["Params"] = "latest"
 
 	return m
 }
